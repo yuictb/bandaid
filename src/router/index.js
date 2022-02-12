@@ -4,6 +4,7 @@ let Public=()=>import('../views/Public')
 let Mine=()=>import('../views/Mine')
 let Design=()=>import('../views/Design')
 let Search=()=>import('../views/Search')
+let More=()=>import('../views/More')
 
 const routes = [
   {
@@ -27,6 +28,10 @@ const routes = [
   {
     path:'/search',
     component:Search
+  },
+  {
+    path:'/more/:id',
+    component:More
   }
 ]
 

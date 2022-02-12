@@ -23,7 +23,7 @@
 </template>
 <style scoped lang='less'>
 .bbs_footer {
-  width: 100%;
+  width: 3.75rem;
   height: 0.54rem;
   position: fixed;
   bottom: 0;

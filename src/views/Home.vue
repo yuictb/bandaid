@@ -76,7 +76,7 @@ export default {
       let res = await fetch(
         "/v2/mobile/main/getMainMiniProgramHomeInfo.do?_dataType=json&_dataClientType=3&client_type=40"
       ).then((r) => r.json());
-      // console.log(res);
+      console.log(res);
       this.apf = res.body.data;
       this.suis = res.body.data.sceneDetails.sceneDetail;
       this.getavvs();

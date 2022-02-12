@@ -5,7 +5,7 @@
       <span>进入场景</span>
     </div>
     <ul>
-      <li v-for="item in suis.templates" :key="item">
+      <li v-for="item in suis.templates" :key="item" @click="jump(item.designTemplateId)">
         <img
          :style="{height:parseInt(item.height)/parseInt(item.width)*1.2+'rem'}"
          :src="'https:' + item.designTemplateThumbUrls[0]+'?v=1644565553801&x-oss-process=image/resize,w_300/format,jpg'" alt="" />
@@ -49,6 +49,11 @@ export default {
       this.suis.templates = res.body.templates;
       this.$emit("update:suis", this.suis.templates);
     },
+    jump(fr){
+      this.$router.push({
+        path:`/more/${fr}`
+      })
+    }
   },
 };
 </script>
