@@ -2,7 +2,7 @@
   <div class="list_contents">
     <div class="contents_header">
       <p>{{ suis.name }}</p>
-      <span>进入场景</span>
+      <span @click="juyf(suis.kindId,suis.name)">进入场景</span>
     </div>
     <ul>
       <li v-for="item in suis.templates" :key="item" @click="jump(item.designTemplateId)">
@@ -12,7 +12,7 @@
       </li>
     </ul>
     <main>
-      <p>更多</p>
+      <p @click="juyf(suis.kindId,suis.name)">更多</p>
       <p @click="nextyys(suis.kindid)">换一批</p>
     </main>
   </div>
@@ -25,12 +25,11 @@ export default {
       page: 1,
     };
   },
-  created() {
-    // this.getss();
-  },
   methods: {
-    getss() {
-      console.log(this.suis);
+    juyf(a,b){
+      this.$router.push({
+        path:`/tfyss/${a}/${b}`
+      })
     },
     // 换一批数据
     async nextyys() {

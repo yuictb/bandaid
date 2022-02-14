@@ -62,10 +62,10 @@ export default {
       flag:true
     };
   },
-  created() {
-    this.getfirst();
-    this.onloadss()
-    
+  activated(){
+     this.getfirst();
+     this.onloadss();
+     console.log('创建wakaka');
   },
   methods: {
     // 自定义事件 子组件传值
@@ -78,6 +78,7 @@ export default {
       ).then((r) => r.json());
       console.log(res);
       this.apf = res.body.data;
+      console.log(this.apf);
       this.suis = res.body.data.sceneDetails.sceneDetail;
       this.getavvs();
     },
@@ -125,6 +126,7 @@ export default {
     height: 0.54rem;
     padding: 0.1rem 0;
     box-sizing: border-box;
+    position: sticky;
     .search_box {
       width: 3.51rem;
       height: 0.34rem;
