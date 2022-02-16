@@ -12,7 +12,7 @@
         v-for="item in apf.scene.slice(0, 8)"
         :key="item.designKindId"
       >
-        <router-link to="/ays">
+        <router-link :to="'/tfyss/'+item.designKindId+'/'+item.name">
           <img :src="'https:' + item.thumbUrl" alt="" />
           <p>{{ item.name }}</p>
         </router-link>
@@ -21,7 +21,7 @@
     <div class="middle_bar">
       <p>推荐专题</p>
       <ul class="turn_left">
-        <li class="left_rrr" v-for="(item, index) in avvs">
+        <li class="left_rrr" v-for="(item, index) in avvs" @click="this.$router.push(`/toscc/${item.id}`)" :key="item.id">
           <div>{{ item.title }}</div>
           <main>{{ item.themeDescribe }}</main>
           <section :style="{ background: colors[index] }"></section>
@@ -36,9 +36,9 @@
         @update:suis="topse"
       ></types>
     </template>
+    <touchss v-if="this.$store.state.bbflag"></touchss>
   </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -63,9 +63,9 @@ export default {
     };
   },
   activated(){
+     this.$store.commit('setpath','')
      this.getfirst();
      this.onloadss();
-     console.log('创建wakaka');
   },
   methods: {
     // 自定义事件 子组件传值
@@ -76,9 +76,7 @@ export default {
       let res = await fetch(
         "/v2/mobile/main/getMainMiniProgramHomeInfo.do?_dataType=json&_dataClientType=3&client_type=40"
       ).then((r) => r.json());
-      console.log(res);
       this.apf = res.body.data;
-      console.log(this.apf);
       this.suis = res.body.data.sceneDetails.sceneDetail;
       this.getavvs();
     },

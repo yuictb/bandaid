@@ -6,4 +6,5 @@ import store from './store'
 import './assets/global.css'
 // 全局组件
 import Types from './components/Types.vue';
-createApp(App).component('types',Types).use(store).use(router).mount('#app')
+import Touchss from './components/Touchss.vue'
+createApp(App).component('types',Types).component('touchss',Touchss).use(store).use(router).mount('#app')

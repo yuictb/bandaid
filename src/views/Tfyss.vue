@@ -6,7 +6,13 @@
         在当前场景下搜索
       </div>
       <Tabs style="position: relative" color="#0773fc" v-model:active="active">
-        <img @click="typo" :style="{transform:rr}" class="topsdf" src="../assets/下箭头.png" alt="" />
+        <img
+          @click="typo"
+          :style="{ transform: rr }"
+          class="topsdf"
+          src="../assets/下箭头.png"
+          alt=""
+        />
         <Tab v-for="item in tages" :title="item.name" :name="item.tagId"></Tab>
       </Tabs>
       <Overlay :show="show" @click="show = false" class="Overl">
@@ -36,8 +42,8 @@
       <ul class="mmjs" v-show="flag2">
         <li
           v-for="(item, index) in mjk"
-          :class="{ yys: index == p2 }"
-          @click="change2(index)"
+          :class="{ yys: item.id == p2 }"
+          @click="change2(item.id)"
           :key="item.id"
         >
           {{ item.name }}
@@ -49,18 +55,30 @@
         v-for="item in imgsurl"
         :key="item.designTemplateId"
         @click="jumps(item.designTemplateId)"
+        @touchstart.stop="tts(item)" @touchend="tuis"
       >
-        <img :src="'https:' + item.designTemplateThumbUrls[0]" alt="" />
+        <img
+          :src="
+            'https:' +
+            item.designTemplateThumbUrls[0] +
+            '?v=1644565553801&x-oss-process=image/resize,w_300/format,jpg'
+          "
+          alt=""
+        />
       </li>
     </ul>
+    <touchss v-if="this.$store.state.bbflag"></touchss>
   </div>
 </template>
 <script setup>
 import { ref, onActivated, watch, watchEffect } from "vue";
+import { mapState, mapMutations, useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import { Tab, Tabs, Overlay } from "vant";
 const route = useRoute();
 const router = useRouter();
+const store = useStore();
+
 let tages = ref([]);
 let active = ref(0);
 let show = ref(false);
@@ -72,38 +90,53 @@ let mmj = ref([
 ]);
 let mjk = ref([
   { name: "全部", id: 0 },
-  { name: "免费", id: 1 },
-  { name: "付费", id: 2 },
+  { name: "免费", id: 2 },
+  { name: "付费", id: 3 },
 ]);
-let rr=ref('rotate(0)')
+let rr = ref("rotate(0)");
 // all imgs url
 let imgsurl = ref([]);
 let p1 = ref(0);
 let p2 = ref(0);
 let flag2 = ref(false);
+
 let typo = () => {
   show.value = !show.value;
-  if(show.value){
-     rr.value='rotate(180deg)'
-  }else{
-     rr.value='rotate(0)'
+  if (show.value) {
+    rr.value = "rotate(180deg)";
+  } else {
+    rr.value = "rotate(0)";
   }
 };
 let change1 = (index) => {
   p1.value = index;
 };
-let change2 = (index) => {
-  p2.value = index;
+let change2 = (d) => {
+  p2.value = d;
 };
 let jumps = (y) => {
   router.push({
     path: `/more/${y}`,
   });
 };
+let timer=ref('')
+let tts=(t)=>{
+     timer.value=setTimeout(()=>{
+           console.log('按压');
+           store.commit('setBflag',true)
+        },500)
+        store.commit('setItem',t)
+};
+let tuis=()=>{
+        clearTimeout(timer.value)
+     };
 onActivated(() => {
-  getcontents();
-  show.value = false;
-  gettypes();
+  if(!store.state.path){
+    getcontents();
+    gettypes();
+    show.value = false;
+    console.log('数据更新');
+  }
 });
 let gty = (vvf) => {
   active.value = vvf;
@@ -122,14 +155,12 @@ let gettypes = async () => {
       active.value +
       "&_dataClientType=3"
   ).then((r) => r.json());
-  console.log(url.body.cacheUrl);
   let res = await fetch("/pub" + url.body.cacheUrl.split("t.com")[1]).then(
     (r) => r.json()
   );
-  if(res.body){
-      imgsurl.value = res.body.templates;
+  if (res.body) {
+    imgsurl.value = res.body.templates;
   }
-  
 };
 let getcontents = async () => {
   let res = await fetch(
@@ -146,7 +177,7 @@ watch([active, p1, p2, route.params.id], () => {
 </script>
 <style scoped lang="less">
 .box {
-  .stickys{
+  .stickys {
     width: 3.75rem;
     position: fixed;
     top: 0;
@@ -157,7 +188,7 @@ watch([active, p1, p2, route.params.id], () => {
   .search_ff {
     width: 3.5rem;
     height: 0.34rem;
-    margin: 0.05rem 0.12rem ;
+    margin: 0.05rem 0.12rem;
     display: flex;
     align-items: center;
     justify-content: center;

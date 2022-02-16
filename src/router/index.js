@@ -37,7 +37,12 @@ const routes = [
   {
     path:'/tfyss/:id/:n',
     component:Tfyss
+  },
+  {
+     path:'/toscc/:id',
+     component:()=>import ('../views/Toscc')
   }
+   
 ]
 
 const router = createRouter({

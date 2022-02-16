@@ -5,7 +5,7 @@
       <span @click="juyf(suis.kindId,suis.name)">进入场景</span>
     </div>
     <ul>
-      <li v-for="item in suis.templates" :key="item" @click="jump(item.designTemplateId)">
+      <li v-for="item in suis.templates" :key="item" @click="jump(item)" @touchstart.stop="tts(item)" @touchend="tuis">
         <img
          :style="{height:parseInt(item.height)/parseInt(item.width)*1.2+'rem'}"
          :src="'https:' + item.designTemplateThumbUrls[0]+'?v=1644565553801&x-oss-process=image/resize,w_300/format,jpg'" alt="" />
@@ -16,6 +16,7 @@
       <p @click="nextyys(suis.kindid)">换一批</p>
     </main>
   </div>
+   
 </template>
 <script>
 export default {
@@ -23,11 +24,25 @@ export default {
   data() {
     return {
       page: 1,
+      pathys:'',
+      timer:''
     };
   },
   methods: {
+     tts(r){
+        this.timer=setTimeout(()=>{
+           console.log('按压');
+           this.$store.commit('setBflag',true)
+        },500)
+        this.$store.commit('setItem',r)
+     },
+     tuis(){
+        clearTimeout(this.timer)
+     },
+
     juyf(a,b){
       this.$router.push({
+        // 判断from
         path:`/tfyss/${a}/${b}`
       })
     },
@@ -50,7 +65,7 @@ export default {
     },
     jump(fr){
       this.$router.push({
-        path:`/more/${fr}`
+        path:`/more/${fr.designTemplateId}`
       })
     }
   },
