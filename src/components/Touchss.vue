@@ -1,5 +1,5 @@
 <template>
-  <div class="box" @click.self="store.commit('setBflag',false)">
+  <div class="box" @click.self="changysd">
     <img
       :src="
         'https:' +
@@ -12,48 +12,53 @@
       alt=""
     />
     <div class="collect">
-        <section>
-            <p :style="{color:ccs}" @click="ttfg" class="iconfont icon-sheji"></p>
-            <div>收藏</div>
-        </section>
+      <section>
+        <p
+          :style="{ color: ccs }"
+          @click="ttfg"
+          class="iconfont icon-sheji"
+        ></p>
+        <div>收藏</div>
+      </section>
     </div>
   </div>
 </template>
 <script setup>
-import { Toast } from 'vant';
-import { ref ,computed} from "vue";
+import { Toast } from "vant";
+import { ref, computed ,watch , watchEffect} from "vue";
 import { useStore } from "vuex";
 const store = useStore();
 let ts = ref({});
 let getgirst = () => {
   ts.value = store.state.item;
 };
-let ccs=ref('')
-let cgh=ref(false)
+let ccs = ref("");
+let cgh = ref(false);
 getgirst();
-let ttfg=()=>{
-    cgh.value=!cgh.value
-    if(cgh.value){
-        ccs.value='red'
-        Toast('收藏成功,可在我的收藏里查看');
-    }else{
-        ccs.value=''
-        Toast('取消收藏成功');
-    }
-}
-// computed(()=>{
-//     show=()=>{
-//         return store.state.bbflag
-//     }
-// })
-// let changs=()=>{
-//     if(show){
-//         document.documentElement.style.overflow='hidden'
-//     }else{
-//          document.documentElement.style.overflow='auto'
-//     }
-// }
-// changs()
+let ttfg = () => {
+  cgh.value = !cgh.value;
+  if (cgh.value) {
+    ccs.value = "red";
+    Toast("收藏成功,可在我的收藏里查看");
+  } else {
+    ccs.value = "";
+    Toast("取消收藏成功");
+  }
+};
+let changysd = () => {
+  store.commit("setBflag", false);
+  store.commit("setItem", "");
+  changs()
+};
+let changs = () => {
+  if (store.state.bbflag) {
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow='hidden'
+  } else {
+    document.documentElement.style.overflow = "auto";
+  }
+};
+changs()
 </script> 
 <style scoped lang="less">
 .box {
@@ -71,33 +76,32 @@ let ttfg=()=>{
   img {
     width: 2.4rem;
   }
-  .collect{
-      width: 2.4rem;
-      height: 1.17rem;
-      padding: 0.3rem 0.3rem 0;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      section{
-          width: 0.5rem;
-          height: 0.5rem;
-          background: white;
-          text-align: center;
-          line-height: 0.5rem;
-          border-radius: 50%;
-          p{
-          font-size: 0.3rem;
-          }
-          div{
-              color: white;
-          }
+  .collect {
+    width: 2.4rem;
+    height: 1.17rem;
+    padding: 0.3rem 0.3rem 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    section {
+      width: 0.5rem;
+      height: 0.5rem;
+      background: white;
+      text-align: center;
+      line-height: 0.5rem;
+      border-radius: 50%;
+      p {
+        font-size: 0.3rem;
       }
-      
+      div {
+        color: white;
+      }
+    }
   }
-  .active{
-      color: red;
+  .active {
+    color: red;
   }
 }
 </style>

@@ -55,7 +55,8 @@
         v-for="item in imgsurl"
         :key="item.designTemplateId"
         @click="jumps(item.designTemplateId)"
-        @touchstart.stop="tts(item)" @touchend="tuis"
+        @touchstart.stop="tts(item)"
+        @touchend="tuis"
       >
         <img
           :src="
@@ -119,23 +120,23 @@ let jumps = (y) => {
     path: `/more/${y}`,
   });
 };
-let timer=ref('')
-let tts=(t)=>{
-     timer.value=setTimeout(()=>{
-           console.log('按压');
-           store.commit('setBflag',true)
-        },500)
-        store.commit('setItem',t)
+let timer = ref("");
+let tts = (t) => {
+  timer.value = setTimeout(() => {
+    console.log("按压");
+    store.commit("setBflag", true);
+  }, 500);
+  store.commit("setItem", t);
 };
-let tuis=()=>{
-        clearTimeout(timer.value)
-     };
+let tuis = () => {
+  clearTimeout(timer.value);
+};
 onActivated(() => {
-  if(!store.state.path){
+  if (!store.state.path) {
     getcontents();
     gettypes();
     show.value = false;
-    console.log('数据更新');
+    console.log("数据更新");
   }
 });
 let gty = (vvf) => {
@@ -168,7 +169,11 @@ let getcontents = async () => {
       route.params.id +
       "&_dataClientType=3"
   ).then((r) => r.json());
-  tages.value = res.body.secondKindInfo.repoTag.use;
+  if (res.body.secondKindInfo.repoTag.use.length) {
+    tages.value = res.body.secondKindInfo.repoTag.use;
+  } else {
+     tages.value=res.body.secondKindInfo.repoTag.style
+  }
   tages.value.unshift({ name: "全部", tagId: 0 });
 };
 watch([active, p1, p2, route.params.id], () => {
